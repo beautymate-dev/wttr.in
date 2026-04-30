@@ -1,0 +1,30 @@
+geo:
+  locationCacheType: "memory"
+  locationCache: "/tmp/location_cache"
+
+ip:
+  ipCacheType: "memory"
+  ipCache: "/tmp/ip_cache"
+  geoip2: "/app/GeoLite2-City.mmdb"
+
+weather:
+  wwo:
+    baseUrl: "https://api.worldweatheronline.com/premium/v1/weather.ashx?key={key}&q={q}&num_of_days=3&tp=3&format=json"
+    key: "${WWO_KEY}"
+    maxConns: 100
+
+cache:
+  type: "memory"
+  maxEntries: 10000
+  ttl: 600
+
+logging:
+  level: "info"
+  format: "json"
+
+server:
+  listenHost: "0.0.0.0"
+  listenPort: 8002
+
+renderer:
+  subprocess: []

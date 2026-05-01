@@ -14,17 +14,15 @@ weather:
     maxConns: 100
 
 cache:
-  type: "memory"
-  maxEntries: 10000
-  ttl: 600
+  size: 10000
 
 logging:
-  level: "info"
-  format: "json"
+  accessLog: "/tmp/access.log"
+  errorsLog: "/tmp/errors.log"
+  interval: 60
 
 server:
-  listenHost: "0.0.0.0"
-  listenPort: 8002
+  portHttp: 8002
 
 renderer:
   subprocess: []

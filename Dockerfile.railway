@@ -13,6 +13,15 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
+
+# Set up embed directory structure required by Go embed directives
+RUN mkdir -p internal/assets/embed/share/templates && \
+    cp -r share/templates/* internal/assets/embed/share/templates/ && \
+    mkdir -p internal/assets/embed/spec && \
+    cp -r spec/* internal/assets/embed/spec/ 2>/dev/null || true && \
+    mkdir -p internal/assets/embed/fonts && \
+    touch internal/assets/embed/fonts/.placeholder
+
 RUN CGO_ENABLED=1 go build -o wttr.in .
 
 # Runtime stage - Debian slim with Python 3.11 (pyjq doesn't support 3.12)

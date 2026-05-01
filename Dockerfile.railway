@@ -1,10 +1,13 @@
-# Build stage - Go binary
-FROM golang:1-alpine AS builder
+# Build stage - Go binary (Debian-based to avoid musl SQLite issues)
+FROM golang:1-bookworm AS builder
 
 WORKDIR /app
 
 # Install build dependencies for CGO (SQLite)
-RUN apk add --no-cache build-base sqlite-dev gcc g++
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY go.mod go.sum ./
 RUN go mod download
@@ -12,41 +15,33 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=1 go build -o wttr.in .
 
-# Runtime stage
-FROM alpine:3.21.1
+# Runtime stage - Debian slim
+FROM python:3.12-slim-bookworm
 
 WORKDIR /app
 
-# Install build dependencies temporarily for package compilation
-RUN apk add --no-cache --virtual .build-deps \
-    build-base \
+# Install build dependencies temporarily for Python package compilation
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
     gcc \
     g++ \
     cmake \
-    python3-dev
-
-# Install runtime dependencies
-RUN apk add --no-cache \
-    python3 \
-    py3-pip \
-    py3-scipy \
-    py3-wheel \
-    py3-gevent \
-    zlib \
-    jpeg \
-    libtool \
-    supervisor \
-    py3-numpy \
+    llvm \
+    llvm-dev \
+    libjpeg-dev \
+    zlib1g-dev \
+    libsqlite3-0 \
     bash \
     wget \
+    supervisor \
+    && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /app/cache \
     && mkdir -p /var/log/supervisor \
     && mkdir -p /etc/supervisor/conf.d
 
 # Copy requirements and install Python deps
 COPY requirements.txt .
-RUN pip install -r requirements.txt --no-cache-dir --break-system-packages && \
-    apk del --no-cache .build-deps
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY --from=builder /app/wttr.in /app/bin/wttr.in

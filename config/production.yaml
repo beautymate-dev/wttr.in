@@ -1,9 +1,9 @@
 geo:
-  locationCacheType: "memory"
+  locationCacheType: "files"
   locationCache: "/tmp/location_cache"
 
 ip:
-  ipCacheType: "memory"
+  ipCacheType: "files"
   ipCache: "/tmp/ip_cache"
   geoip2: "/app/GeoLite2-City.mmdb"
 

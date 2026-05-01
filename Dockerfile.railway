@@ -3,8 +3,8 @@ FROM golang:1-alpine AS builder
 
 WORKDIR /app
 
-# Install build dependencies for CGO
-RUN apk add --no-cache build-base sqlite-dev
+# Install build dependencies for CGO (SQLite)
+RUN apk add --no-cache build-base sqlite-dev gcc g++
 
 COPY go.mod go.sum ./
 RUN go mod download
@@ -23,7 +23,6 @@ RUN apk add --no-cache --virtual .build-deps \
     gcc \
     g++ \
     cmake \
-    llvm11-dev \
     python3-dev
 
 # Install runtime dependencies

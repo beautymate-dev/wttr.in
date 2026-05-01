@@ -1,6 +1,11 @@
 geo:
   locationCacheType: "files"
   locationCache: "/tmp/location_cache"
+  nominatim:
+    - name: "locationiq"
+      type: "iq"
+      url: "https://us1.locationiq.com/v1/search.php"
+      token: "${LOCATIONIQ_TOKEN}"
 
 ip:
   ipCacheType: "files"

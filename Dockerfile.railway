@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config \
     bash \
     wget \
+    gettext-base \
     supervisor \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /app/cache \

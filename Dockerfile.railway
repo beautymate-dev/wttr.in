@@ -15,8 +15,9 @@ RUN go mod download
 COPY . .
 
 # Set up embed directory structure required by Go embed directives
-RUN mkdir -p internal/assets/embed/share/templates && \
-    cp -r share/templates/* internal/assets/embed/share/templates/ && \
+RUN mkdir -p internal/assets/embed/share && \
+    cp -r share/templates internal/assets/embed/share/ && \
+    cp -r share/static internal/assets/embed/share/ && \
     mkdir -p internal/assets/embed/spec && \
     cp -r spec/* internal/assets/embed/spec/ 2>/dev/null || true && \
     mkdir -p internal/assets/embed/fonts && \

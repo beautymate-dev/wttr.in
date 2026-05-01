@@ -14,7 +14,7 @@ ip:
 
 weather:
   wwo:
-    baseUrl: "https://api.worldweatheronline.com/premium/v1/weather.ashx?key={key}&q={q}&num_of_days=3&tp=3&format=json"
+    baseUrl: "https://api.worldweatheronline.com/premium/v1/weather.ashx?key={key}&q={lat},{lon}&num_of_days=3&tp=3&format=json&lang={lang}"
     key: "${WWO_KEY}"
     maxConns: 100
 
